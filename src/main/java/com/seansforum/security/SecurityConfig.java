@@ -1,6 +1,5 @@
 package com.seansforum.security;
 
-import com.seansforum.repository.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -18,7 +17,6 @@ import javax.servlet.http.HttpServletResponse;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter{
-	@Autowired private UserRepo userRepo;
     @Autowired private JWTFilter filter;
     @Autowired private MyUserDetailsService uds;
 
@@ -36,7 +34,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
                 .exceptionHandling()
                     .authenticationEntryPoint(
                             (request, response, authException) ->
-                                    response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Unauthorized")
+                                    response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "User is Blocked")
                     )
                 .and()
                 .sessionManagement()

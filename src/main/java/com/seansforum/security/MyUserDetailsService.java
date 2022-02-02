@@ -23,9 +23,13 @@ public class MyUserDetailsService implements UserDetailsService {
         if(userRes.isEmpty())
             throw new UsernameNotFoundException("Could not findUser with login = " + login);
         User user = userRes.get();
-        return new org.springframework.security.core.userdetails.User(
-        		user.getLogin(),
-                user.getPassword(),
-                Collections.singletonList(new SimpleGrantedAuthority("ROLE_USER")));
+        if (user.getUser_access() == 1) {
+        	return new org.springframework.security.core.userdetails.User(
+            		user.getLogin(),
+                    user.getPswd(),
+                    Collections.singletonList(new SimpleGrantedAuthority("ROLE_USER")));
+        } else {
+        	throw new UsernameNotFoundException("User with login = " + login + " is BLOCKED");
+        }
     }
 }

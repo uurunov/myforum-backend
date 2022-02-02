@@ -40,6 +40,34 @@ public class UserController {
         return userRepo.findByLogin(login).get();
     }
     
+    @GetMapping("/users")
+    public ResponseEntity<List<User>> getAllUsers(@RequestParam(required = false) Long userId) {
+		try {
+			List<User> users = new ArrayList<User>();
+
+			if (userId == null)
+				userRepo.findAll().forEach(users::add);
+
+			if (users.isEmpty()) {
+				return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+			}
+
+			return new ResponseEntity<>(users, HttpStatus.OK);
+		} catch (Exception e) {
+			return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+    
+    @PutMapping("/users/{id}")
+    public ResponseEntity<User> updateUserAccess(@PathVariable("id") long id, @RequestBody User userRequest) {
+      User user = userRepo.findById(id)
+          .orElseThrow();
+
+      user.setUser_access(userRequest.getUser_access());
+
+      return new ResponseEntity<>(userRepo.save(user), HttpStatus.OK);
+    }
+    
     @PostMapping("/topics")
     public String topicHandler(@RequestBody Topic topic){
         topicRepo.save(topic);
@@ -76,6 +104,22 @@ public class UserController {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
 	}
+    
+    @PutMapping("/topics/{id}")
+    public ResponseEntity<Topic> updateTopic(@PathVariable("id") long id, @RequestBody Topic topicRequest) {
+      Topic topic = topicRepo.findById(id)
+          .orElseThrow();
+
+      topic.setTitle(topicRequest.getTitle());
+
+      return new ResponseEntity<>(topicRepo.save(topic), HttpStatus.OK);
+    }
+    
+    @DeleteMapping("/topics/{id}")
+    public ResponseEntity<HttpStatus> deleteTopic(@PathVariable("id") long id) {
+      topicRepo.deleteById(id);
+      return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
     
     @PostMapping("/topics/{topicId}/comments")
     public ResponseEntity<Comment> createComment(@PathVariable(value = "topicId") Long topicId,

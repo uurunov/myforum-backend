@@ -9,5 +9,5 @@ import lombok.*;
 @ToString
 public class LoginCredentials {
     private String login;
-    private String password;
+    private String pswd;
 }

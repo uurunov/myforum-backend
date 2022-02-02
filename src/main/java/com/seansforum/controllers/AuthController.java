@@ -30,8 +30,8 @@ public class AuthController {
 
     @PostMapping("/register")
     public Map<String, Object> registerHandler(@RequestBody User user){
-        String encodedPass = passwordEncoder.encode(user.getPassword());
-        user.setPassword(encodedPass);
+        String encodedPass = passwordEncoder.encode(user.getPswd());
+        user.setPswd(encodedPass);
         user = userRepo.save(user);
         String result = "User is registered";
         return Collections.singletonMap("result", result);
@@ -41,7 +41,7 @@ public class AuthController {
     public Map<String, Object> loginHandler(@RequestBody LoginCredentials body){
         try {
             UsernamePasswordAuthenticationToken authInputToken =
-                    new UsernamePasswordAuthenticationToken(body.getLogin(), body.getPassword());
+                    new UsernamePasswordAuthenticationToken(body.getLogin(), body.getPswd());
 
             authManager.authenticate(authInputToken);
 
@@ -49,7 +49,7 @@ public class AuthController {
 
             return Collections.singletonMap("jwtToken", token);
         }catch (AuthenticationException authExc){
-            throw new RuntimeException("Invalid Login Credentials");
+            throw new RuntimeException("Incorrect login or password", authExc);
         }
     }
 }

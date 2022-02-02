@@ -5,13 +5,11 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
@@ -27,13 +25,29 @@ public class User {
 	@SequenceGenerator(name="user_generator", sequenceName = "user_seq", allocationSize=1)
 	@Column(name = "user_id")
     private Long id;
+	
+	@Column(name = "fname")
+	private String fname;
+	
+	@Column(name = "mname")
+	private String mname;
 
-    private String lastname;
+	@Column(name = "lname")
+    private String lname;
     
+	@Column(name = "email")
+    private String email;
+    
+	@Column(name = "login")
     private String login;
 
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    private String password;
+    @Column(name = "pswd")
+    private String pswd;
     
-    private String role;
+    @Column(name = "user_role")
+    private String user_role;
+    
+    @Column(name = "user_access")
+    private int user_access;
 }

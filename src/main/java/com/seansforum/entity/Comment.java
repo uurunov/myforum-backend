@@ -31,12 +31,11 @@ public class Comment {
 	@Column(name = "comment_id")
 	private Long id;
 	
-	@Column(name="content")
+	@Column(name = "content")
 	private String content;
 	
-	@Column(name="comment_date")
+	@Column(name = "comment_date")
 	private String comment_date;
-	
 	
 	@ManyToOne(fetch = FetchType.LAZY, optional = false)
 	@JoinColumn(name="topic_id", nullable = false)
